@@ -11,21 +11,17 @@
 
 fn main() {
     let _test = divisors(15);
-    // println!("{test}");
 }
 
 fn divisors(integer: u32) -> Result<Vec<u32>, String> {
-    let mut output: Vec<u32> = Vec::new();
-    let mut k: u32 = 2;
-    let mut is_divisible: bool = integer % k == 0;
-    match is_divisible {
-        true => Ok(k),
-        false => Err(None::<T>),
-    };
-    loop {
-        if integer % k == 0 { Ok(output.push(k)); }
-        else { Err(None); }
-        k += 1;
-    };
-    Ok(output)
+    let mut ans: Vec<u32> = Vec::new();
+    for k in 2..integer {
+        if integer % k == 0 {
+            ans.push(k);
+        }
+    }
+    match ans.len() {
+        0 => Err(format!("{integer} is prime")),
+        _ => Ok(ans),
+    }
 }
