@@ -1,20 +1,23 @@
 void circle_mender(char *content)
 {
-    int lineNum = 0;
-    char currentChar;
-    char newline = 0x0A;
-    char space = 0x20;
-    char pound = 0x23;
-    char newlineFlag = 0;
-    char spaceFlag = 0;
-    char poundFlag = 0;
-    for (int i = 0; i <= 40; i ++) {
-        currentChar = content[(lineNum * 40) + i];
-        if (currentChar == space && !poundFlag && !spaceFlag) {
-            spaceFlag = 1;
-        }
-        if (currentChar == pound) {
-            
+    int inside = 0; // flag to see if we are inside the circle
+    for (char *c = content; *c != 0; c += 41) // iterate line by line in outer loop
+    {
+        for (char *s = c + 40; s != c; s--) // find the last # character
+        {
+            if (*s == '#')
+            {
+                for (char *a = c; a != s; a++) // iteratre through the line until the last # character
+                {
+                    if (*a == '#') inside = 1; // when we reach the first #, we are inside
+                    if (inside)
+                    {
+                        if (*a == ' ') *a = '#';
+                    }
+                }
+                inside = 0; // set inside flag back to 0 for next line
+                break;
+            }
         }
     }
 }
