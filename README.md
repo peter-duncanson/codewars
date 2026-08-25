@@ -1,1 +1,1 @@
-Codewars solutions in various languages
+Codewars solutions
