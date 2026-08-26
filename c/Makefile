@@ -1,4 +1,4 @@
-SRC = dollar_piles.c
+SRC = get_loop.c
 TARGET = $(SRC:.c=)
 CC = gcc
 CFLAGS = -Wall -Wextra -g

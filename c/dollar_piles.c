@@ -42,7 +42,6 @@ unsigned long long calc(size_t length, const unsigned int array[length])
         if (*p < base) base = *p;
     }
 
-    // trying this, it kind of makes sense
     gcd = base;
 
     while (base)
