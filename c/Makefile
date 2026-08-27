@@ -1,4 +1,4 @@
-SRC = get_loop.c
+SRC = valid_braces.c
 TARGET = $(SRC:.c=)
 CC = gcc
 CFLAGS = -Wall -Wextra -g
