@@ -1,4 +1,4 @@
-SRC = valid_braces.c
+SRC = multiplication_table.c
 TARGET = $(SRC:.c=)
 CC = gcc
 CFLAGS = -Wall -Wextra -g
