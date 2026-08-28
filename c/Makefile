@@ -1,4 +1,4 @@
-SRC = multiplication_table.c
+SRC = rgb_hex_convert.c
 TARGET = $(SRC:.c=)
 CC = gcc
 CFLAGS = -Wall -Wextra -g
