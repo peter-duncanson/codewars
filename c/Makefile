@@ -1,4 +1,4 @@
-SRC = rgb_hex_convert.c
+SRC = src/rgb_hex_convert.c
 TARGET = $(SRC:.c=)
 CC = gcc
 CFLAGS = -Wall -Wextra -g
