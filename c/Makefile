@@ -1,4 +1,4 @@
-SRC = src/rgb_hex_convert.c
+SRC = src/hamming_numbers.c
 TARGET = $(SRC:.c=)
 CC = gcc
 CFLAGS = -Wall -Wextra -g
