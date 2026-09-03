@@ -1,4 +1,4 @@
-SRC = src/hamming_numbers.c
+SRC = src/prime_gaps.c
 TARGET = $(SRC:.c=)
 CC = gcc
 CFLAGS = -Wall -Wextra -g
