@@ -1,4 +1,4 @@
-SRC = src/prime_gaps.c
+SRC = src/valid_isbn.c
 TARGET = $(SRC:.c=)
 CC = gcc
 CFLAGS = -Wall -Wextra -g
