@@ -1,4 +1,4 @@
-SRC = src/valid_isbn.c
+SRC = src/shortest_knight_path.c
 TARGET = $(SRC:.c=)
 CC = gcc
 CFLAGS = -Wall -Wextra -g
