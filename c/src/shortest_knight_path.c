@@ -7,95 +7,120 @@ algebraic notation.
 For example, knight("a3", "b5") should return 1.
 
 The knight is not allowed to move off the board. The board is 8x8.
-
-8
-7
-6
-5
-4
-3
-2
-1
-  a b c d e f g h
-
-char '1' to short 1 -> '1' - 48
-char 'a' to short 1 -> 'a' - 97
 */
 
 #include <stdio.h>
 #include <stdbool.h>
+#include <stdlib.h>
 
-short move_x[8] = { 2, 1, -1, -2, -2, -1, 1, 2 };
-short move_y[8] = { 1, 2, 2, 1, -1, -2, -2, -1 };
-
-bool legal(short x, short y)
+typedef struct node
 {
-    return (x > 0 && x <= 8 && y > 0 && y <= 8);
+    short x;
+    short y;
+    short step;
+    struct node *next;
+} BoardSquare;
+
+// helper function to check if a move is in bounds
+bool legal_move(short x, short y)
+{
+    return (x >= 0 && x <= 7 && y >= 0 && y <= 7);
 }
 
 short knight(const char *p1, const char *p2)
 {
-    // distance in x and y direction, need to find some way to get these in terms of sum
-    // of the elements of move_x and move_y respectively
-    // short dx = *p2 - *p1, dy = *++p2 - *++p1, moves = 0;
-    short end_x = *++p1 - 48, end_y = *++p2 - 48;
-    short moves = 0;
+    BoardSquare *tip = NULL;
+    BoardSquare *tail = NULL;
 
-    for (int i = 0; i < 8; i++)
+    // arrays to hold displacement for knight moves and visited squares
+    short dx[8] = { 2, 1, -1, -2, -2, -1, 1, 2 };
+    short dy[8] = { 1, 2, 2, 1, -1, -2, -2, -1 };
+    bool visited[8][8] = { { false } };
+
+    // convert from algebraic notation to base 0 indexing
+    short end_x = p2[0] - 'a';
+    short end_y = p2[1] - '1';
+
+    short start_x = p1[0] - 'a';
+    short start_y = p1[1] - '1';
+
+    visited[start_x][start_y] = true;
+
+    // create the first node as the starting position
+    BoardSquare *start = malloc(sizeof(BoardSquare));
+    start->x = start_x;
+    start->y = start_y;
+    start->step = 0;
+    start->next = NULL;
+
+    // initialize the queue to for tip and tail to point to start
+    tip = start;
+    tail = start;
+
+    for (;;)
     {
-        short x = *p1 - 97, y = *p2 - 97;
-        x += move_x[i];
-        y += move_y[i];
-
-        if (legal(x, y))
+        // iterate throgh all possible moves array
+        for (short i = 0; i < 8; i++)
         {
-            moves++;
-        }
-        else
-        {
-            x -= move_x[i];
-            y -= move_y[i];
-            continue;
-        }
+            // set new position as the x, y of the tip of the queue + valid move
+            short x = tip->x + dx[i];
+            short y = tip->y + dy[i];
 
-
-        for (int j = 0; j < 8; j++)
-        {
-            x += move_x[j];
-            y += move_y[j];
-            if (legal(x, y))
+            if (legal_move(x, y) && !(visited[x][y]))
             {
-                moves++;
-                if (x == end_x && y == end_y)
-                    return moves;
-                else continue;
+                // add the news square to the queue and set as tail
+                BoardSquare *new = malloc(sizeof(BoardSquare));
+                new->x = x;
+                new->y = y;
+                new->step = tip->step + 1;
+                new->next = NULL;
+
+                visited[x][y] = true;
+
+                if (new->x == end_x && new->y == end_y)
+                {
+                    short result = new->step;
+
+                    // free all the memory and return the steps
+                    while (tip != NULL)
+                    {
+                        BoardSquare *temp = tip;
+                        tip = tip->next;
+                        free(temp);
+                    }
+
+                    return result;
+                }
+                
+                // tail pointer now points to the new node
+                tail->next = new;
+                tail = new;
             }
-            else
-            {
-                x -= move_x[j];
-                y -= move_y[j];
-                continue;
-            }
+
+            else continue;
         }
+        
+        // pop the tip off the queue and free its memory
+        BoardSquare *temp = tip;
+        tip = tip->next;
+        free(temp);
+
+        // largest possible amount of moves is 6
+        if (tip->step > 6)
+            break;
     }
-    return -1000;
+    return -1;
 }
 
 int main(void)
 {
-    printf("a3 -> b5: %d moves.\n", knight("a3", "b5"));
-    printf("h3 -> a7: %d moves.\n", knight("h3", "a7"));
-    printf("g6 -> e3: %d moves.\n", knight("g6", "e3"));
-    printf("c6 -> b5: %d moves.\n", knight("c6", "b5"));
-    printf("a3 -> g4: %d moves.\n", knight("a3", "g4"));
-    printf("c6 -> b7: %d moves.\n", knight("c6", "b7"));
-    printf("d1 -> c7: %d moves.\n", knight("d1", "c7"));
+    printf("a3 -> b5: %d moves. 1\n", knight("a3", "b5"));
+    printf("h3 -> a7: %d moves. 5\n", knight("h3", "a7"));
+    printf("g6 -> e3: %d moves. 3\n", knight("g6", "e3"));
+    printf("c6 -> b5: %d moves. 2\n", knight("c6", "b5"));
+    printf("a3 -> g4: %d moves. 3\n", knight("a3", "g4"));
+    printf("c6 -> b7: %d moves. 2\n", knight("c6", "b7"));
+    printf("d1 -> c7: %d moves. 3\n", knight("d1", "c7"));
 
     return 0;
 }
-// short dx = (short)(*p2 - 97) - (short)(*p1 - 97);
-// short dy = (short)(*++p2 - 48) - (short)(*++p1 - 48);
-// dx = (dx > 0) ? dx : dx * -1;
-// dy = (dy > 0) ? dy : dy * -1;
-// short result = dx - dy;
-// return (result > 0) ? result : (result * -1);
