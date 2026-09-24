@@ -1,4 +1,4 @@
-SRC = src/shortest_knight_path.c
+SRC = src/observed_pin.c
 TARGET = $(SRC:.c=)
 CC = gcc
 CFLAGS = -Wall -Wextra -g
