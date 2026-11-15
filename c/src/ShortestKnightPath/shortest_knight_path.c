@@ -105,9 +105,12 @@ short knight(const char *p1, const char *p2)
         tip = tip->next;
         free(temp);
 
-        // largest possible amount of moves is 6
-        if (tip->step > 6)
-            break;
+        // THIS WAS DUMB, if tip became null from previous block,
+        // this is a null pointer dereference
+        // the check is redundant anyway
+        // // largest possible amount of moves is 6
+        // if (tip->step > 6)
+        //     break;
     }
     return -1;
 }

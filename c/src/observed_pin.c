@@ -62,25 +62,26 @@ const char adj[10][6] = {           // observed
     { '6', '8', '9', '\0', '\0', '\0'  }, // 9
 };
 
-size_t idx = 0;
+// size_t idx = 0;
 
-void dfs(size_t depth, size_t len, char *current, const char *observed, char **pins)
+void dfs(size_t depth, size_t len, size_t count, char *current, const char *observed, const char **pins)
 {
     if (depth == len)
     {
+        pins[count] = malloc(sizeof(len + 1));
         current[depth] = '\0';
-        strcpy(pins[idx++], current);
+        strcpy(pins[count++], current);
         return;
     }
 
     for (const char *c = adj[observed[depth] - '0']; *c; c++)
     {
         current[depth] = *c;
-        dfs(depth + 1, len, current, observed, pins);
+        dfs(depth + 1, len, count, current, observed, pins);
     }
 }
 
-char **get_pins(const char *observed, size_t *count)
+const char **get_pins(const char *observed, size_t *count)
 {
     size_t len = strlen(observed);
 
@@ -88,12 +89,14 @@ char **get_pins(const char *observed, size_t *count)
     for (const char *p = observed; *p; p++)
         *count *= strlen(adj[*p - '0']);
 
-    char **pins = malloc(sizeof(char *) * (*count));
-    for (size_t n = 0; n < *count; n++)
-        pins[n] = malloc(len + 1);
+    const char **pins = malloc(sizeof(const char *) * (*count));
+    *count = 0;
+
+    // for (size_t n = 0; n < *count; n++)
+    //     pins[n] = malloc(len + 1);
 
     char *current = malloc(len + 1);
-    dfs(0, len, current, observed, pins); 
+    dfs(0, len, *count, current, observed, pins); 
     free(current);
 
     return pins;
@@ -111,7 +114,7 @@ void free_pins(char **pins, size_t *count)
 int main(void)
 {
     size_t count;
-    char **pins = get_pins("8", &count);
+    const char **pins = get_pins("8", &count);
 
     for (size_t i = 0; i < count; i++)
         printf("%s\n", pins[i]);
