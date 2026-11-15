@@ -1,4 +1,4 @@
-SRC = src/observed_pin.c
+SRC = src/large_factorials.c
 TARGET = $(SRC:.c=)
 CC = gcc
 CFLAGS = -Wall -Wextra -g
