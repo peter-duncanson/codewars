@@ -1,4 +1,4 @@
-SRC = src/large_factorials.c
+SRC = src/sum_by_factors.c
 TARGET = $(SRC:.c=)
 CC = gcc
 CFLAGS = -Wall -Wextra -g
