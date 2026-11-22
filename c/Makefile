@@ -1,18 +1,21 @@
 SRC = src/sum_by_factors.c
-TARGET = $(SRC:.c=)
+BUILD_DIR = build
+TARGET = $(BUILD_DIR)/$(notdir $(SRC:.c=))
 CC = gcc
 CFLAGS = -Wall -Wextra -g
 
 all: $(TARGET)
 
-$(TARGET): $(SRC)
+$(TARGET): $(SRC) | $(BUILD_DIR)
 	$(CC) $(CFLAGS) -o $@ $<
+
+$(BUILD_DIR):
+	mkdir -p $(BUILD_DIR)
 
 run: $(TARGET)
 	./$(TARGET)
 
 clean:
-	rm -f $(TARGET)
+	rm -rf $(BUILD_DIR)
 
 .PHONY: all run clean
-
