@@ -23,15 +23,19 @@ int *get_primes(int n, int *prime_count)
     if (n < 2)
         return NULL;
 
-    int *range = malloc((sizeof(int) * n) + 1);
+    const int range_len = n + 1;
+    int *range = malloc(sizeof(int) * range_len);
 
-    for (int i = 0; i <= n; i++)
+    // write 0 - n to the range array
+    for (int i = 0; i < range_len; i++)
         range[i] = i;
 
-    for (int i = 2; i <= n; i++) {
+    for (int i = 2; i < range_len; i++) {
+        // if the value isnt zero, it must be prime
         if (range[i] != 0) {
             *prime_count += 1;
-            for (int j = i * i; j <= n; j += i) {
+            // clear all multiples of this number since they are not prime
+            for (int j = i + i; j < range_len; j += i) {
                 range[j] = 0;
             }
         }
@@ -44,6 +48,7 @@ int *get_primes(int n, int *prime_count)
         if (range[i] != 0)
             *p++ = range[i];
     }
+
     free(range);
     return result;
 }
@@ -62,12 +67,18 @@ int get_sqrt(int n)
 
 char *sumOfDivided(const int numbers[], int count)
 {
+    char *result = calloc(1000, sizeof(char));
+    if (count == 0) {
+        result = realloc(result, 1);
+        return result;
+    }
+
     bool has_factor = false;
     int prime_count = 0;
     int largest = get_largest(numbers, count);
     int *primes = get_primes(largest, &prime_count);
-    if (primes == NULL) exit(1);
-    char *result = calloc(10000, sizeof(char));
+    // if (primes == NULL) exit(1);
+
     char *buffer = calloc(80, sizeof(char));
     char *p = result;
 
@@ -119,20 +130,23 @@ int main(void)
     char *p_a = sumOfDivided(a, 2);
     printf("a: %s\n", p_a);
 
-    char *p_b = sumOfDivided(b, 2);
+    char *p_b = sumOfDivided(b, 5);
     printf("b: %s\n", p_b);
 
-    char *p_c = sumOfDivided(c, 2);
+    char *p_c = sumOfDivided(c, 10);
     printf("c: %s\n", p_c);
 
-    char *p_d = sumOfDivided(d, 2);
+    char *p_d = sumOfDivided(d, 5);
     printf("d: %s\n", p_d);
 
-    char *p_e = sumOfDivided(e, 2);
+    char *p_e = sumOfDivided(e, 4);
     printf("e: %s\n", p_e);
 
-    // char *p_f = sumOfDivided(f, 2);
-    // printf("f: %s\n", p_f);
+    char *p_f = sumOfDivided(f, 1);
+    printf("f: %s\n", p_f);
+
+
+
     // int x;
     // int *p = get_primes(173471, &x);
     // for (int i = 0; i < x; i++) {
